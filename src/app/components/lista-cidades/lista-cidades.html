@@ -21,9 +21,11 @@
     />
 
     <div id="div-btns">
-      <button type="button" id="btnAdd" (click)="addCidade()">Adicionar</button>
 
       <button type="button" id="btnLimpar" (click)="limparTudo()">Limpar</button>
+
+      <button type="button" id="btnAdd" (click)="addCidade()"> {{ cidadeEditando ? 'Salvar alteração': 'Adicionar' }}</button>
+
     </div>
   </form>
 
@@ -39,6 +41,14 @@
         &nbsp;
 
         {{ cidade.idCidade }} - {{ cidade.nomeCidade }} - {{ cidade.numeroEleitores }} eleitores
+
+        <button type="button" (click)="excluirCidade(cidade)">
+          Excluir
+        </button>
+
+        <button type="button" (click)="editarCidade(cidade)">
+          Editar
+        </button>
       </div>
     } @empty {
       <div class="div-item">NENHUMA CIDADE CADASTRADA</div>

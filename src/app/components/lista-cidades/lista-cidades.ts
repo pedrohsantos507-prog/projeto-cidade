@@ -9,34 +9,78 @@ import { Cidade } from './Cidade';
   styleUrl: './lista-cidades.css',
 })
 export class ListaCidade {
-  nomeCidade: string = '';
-  numeroEleitores: number | null = null;
+
   listaCidades: Cidade[] = [];
 
+  nomeCidade: string = '';
+  numeroEleitores: number | null = null;
+
+  // Guarda a cidade que está sendo editada
+  cidadeEditando: Cidade | null = null;
+
+
+  editarCidade(cidade: Cidade) {
+
+    // Guarda a cidade que será alterada
+    this.cidadeEditando = cidade;
+
+    // Coloca os dados da cidade nos campos do formulário
+    this.nomeCidade = cidade.nomeCidade;
+    this.numeroEleitores = cidade.numeroEleitores;
+  }
+
+
   addCidade() {
-    //INSTANCIA DA CLASSE ITEM PASSANDO OS PARÂMETROS DO CONSTRUTOR
-    //let item = new Item(this.descricao_produto, this.valor_unitario)
 
-    //instancia da classe item (criando o objeto item)
-    let cidade = new Cidade();
+    // Se existe uma cidade em edição,
+    // vamos alterar os dados dela
+    if (this.cidadeEditando) {
 
-    cidade.idCidade = this.listaCidades.length + 1;
-    cidade.nomeCidade = this.nomeCidade;
-    cidade.numeroEleitores = this.numeroEleitores ?? 0;
+      this.cidadeEditando.nomeCidade = this.nomeCidade;
+      this.cidadeEditando.numeroEleitores = this.numeroEleitores ?? 0;
 
-    //adicionando objeto item ao array listaItens
-    this.listaCidades.push(cidade);
+      // Sai do modo de edição
+      this.cidadeEditando = null;
 
-    //limpando as propriedades da classe
+    } else {
+
+      // Criando uma nova cidade
+      let cidade = new Cidade();
+
+      cidade.idCidade = this.listaCidades.length + 1;
+      cidade.nomeCidade = this.nomeCidade;
+      cidade.numeroEleitores = this.numeroEleitores ?? 0;
+
+      // Adicionando a cidade na lista
+      this.listaCidades.push(cidade);
+    }
+
+    // Limpando os campos
     this.nomeCidade = '';
     this.numeroEleitores = null;
   }
+
 
   selecionarCidade(cidade: Cidade) {
     cidade.selecionado = !cidade.selecionado;
   }
 
+
+  excluirCidade(cidade: Cidade) {
+
+    this.listaCidades = this.listaCidades.filter(
+      c => c.idCidade !== cidade.idCidade
+    );
+
+  }
+
+
   limparTudo() {
     this.listaCidades = [];
+
+    this.nomeCidade = '';
+    this.numeroEleitores = null;
+    this.cidadeEditando = null;
   }
+
 }
